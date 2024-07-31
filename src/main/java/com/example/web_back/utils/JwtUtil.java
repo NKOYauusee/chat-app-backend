@@ -13,7 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@Component
+
+@Component("JwtUtilByXu")
 public class JwtUtil {
     @Value("${nko.jwtKey}")
     private String jwtKey;
@@ -22,8 +23,6 @@ public class JwtUtil {
      * 生成jwt
      * 使用Hs256算法, 私匙使用固定JWT_SEC秘钥
      *
-     * @param ttlMillis jwt过期时间(毫秒)
-     * @param username  用户名 可根据需要传递的信息添加更多, 因为浏览器get传参url限制，不建议放置过多的参数
      */
     public String createJWT(String username, long ttlMillis) {
         // 指定签名的时候使用的签名算法，也就是header那部分

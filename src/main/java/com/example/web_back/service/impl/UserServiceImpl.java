@@ -1,20 +1,14 @@
 package com.example.web_back.service.impl;
 
-import cn.hutool.jwt.JWTUtil;
 import com.example.web_back.entity.po.User;
 import com.example.web_back.exception.BusinessException;
-import com.example.web_back.mapper.user.UserMapper;
+import com.example.web_back.mapper.UserMapper;
 import com.example.web_back.service.UserService;
 import com.example.web_back.utils.MyJwtUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.io.Serial;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {

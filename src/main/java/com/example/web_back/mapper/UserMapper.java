@@ -1,4 +1,4 @@
-package com.example.web_back.mapper.user;
+package com.example.web_back.mapper;
 
 import com.example.web_back.entity.po.User;
 import org.apache.ibatis.annotations.Mapper;

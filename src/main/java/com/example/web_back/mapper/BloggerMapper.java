@@ -1,4 +1,4 @@
-package com.example.web_back.mapper.other;
+package com.example.web_back.mapper;
 
 import com.example.web_back.entity.po.BloggerPo;
 import org.apache.ibatis.annotations.Mapper;

@@ -12,8 +12,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 
-@Data
 @Component
+@Data
 public class ValidateCodeUtil {
     private final Logger logger = LoggerFactory.getLogger(ValidateCodeUtil.class);
 

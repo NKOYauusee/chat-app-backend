@@ -9,12 +9,14 @@ import com.example.web_back.exception.BusinessException;
 import com.example.web_back.service.UserService;
 import com.example.web_back.utils.MailUtil;
 import com.example.web_back.utils.RedisUtils;
-import com.example.web_back.utils.ValidateCodeUtil;
 import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
@@ -29,8 +31,8 @@ public class UserController extends BaseController {
     @Resource
     RedisUtils redisUtils;
 
-    @Resource
-    ValidateCodeUtil codeUtil;
+//    @Resource
+//    ValidateCodeUtil codeUtil;
 
     @RequestMapping("/login")
     public ResponseVo login(
@@ -92,10 +94,10 @@ public class UserController extends BaseController {
 
     @RequestMapping("/captcha")
     public ResponseVo getCaptcha(HttpSession session) {
-        String base64Img = codeUtil.getRandomCodeBase64();
+        //String base64Img = codeUtil.getRandomCodeBase64();
         // TODO 常量表达
-        redisUtils.set(session.getId() + UserConstants.VERIFY_CODE, codeUtil.getCode(), 90);
-        return resSuccess("", base64Img);
+        //redisUtils.set(session.getId() + UserConstants.VERIFY_CODE, codeUtil.getCode(), 90);
+        return resSuccess("", null);
     }
 
 

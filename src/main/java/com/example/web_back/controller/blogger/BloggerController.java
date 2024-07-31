@@ -10,6 +10,8 @@ import jakarta.annotation.Resource;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,12 +21,12 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/blogger")
 public class BloggerController extends BaseController {
+    private static final Logger log = LoggerFactory.getLogger(BloggerController.class);
     private final String blogConstants = "blogger:";
     private final String HAS_READ = "HAS_READ:";
 
     @Resource
     FileUtil fileUtil;
-
     @Resource
     BloggerServiceImpl bloggerService;
 
@@ -44,7 +46,7 @@ public class BloggerController extends BaseController {
             return resFail("请稍后访问", null);
         }
 
-        if (redisUtils.get(HAS_READ + phone) == null) {
+        if (redisUtils.hasKey(HAS_READ + phone)) {
             return resFail("内容不存在", null);
         }
 
@@ -70,12 +72,16 @@ public class BloggerController extends BaseController {
     }
 
     private boolean validateSession(String phone, String id) {
+        log.info("phone {}", phone);
         // sessionId 变了的情况下 限制一个账号 12小时内只能访问一次
         if (redisUtils.hasKey(blogConstants + phone)) {
             String val = (String) redisUtils.get(blogConstants + phone);
+            log.info("val {}", val);
+            log.info("ID {}", id);
+
             return !val.equals(id);
         }
-        redisUtils.set(blogConstants + phone, id, 1000 * 60 * 60 * 12);
+        redisUtils.set(blogConstants + phone, id, 60 * 60 * 12);
         return false;
     }
 }
