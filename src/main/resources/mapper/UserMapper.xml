@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web_back.mapper.user.UserMapper">
+    <resultMap id="BaseResultMap" type="com.example.web_back.entity.po.User">
+        <!--@mbg.generated-->
+        <!--@Table `user`-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        username,
+        email,
+        `password`,
+        phone,
+        avatar
+    </sql>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.web_back.entity.po.User"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into `user` (username, email, `password`,
+                            phone, avatar)
+        values (#{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+                #{phone,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR})
+    </insert>
+    <update id="updateByEmailSelective" parameterType="com.example.web_back.entity.po.User">
+        <!--@mbg.generated-->
+        update `user`
+        <set>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                `password` = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where email = #{email,jdbcType=VARCHAR}
+    </update>
+    <insert id="register" keyProperty="id" parameterType="com.example.web_back.entity.po.User" useGeneratedKeys="true">
+        INSERT INTO user (username, email, password)
+        VALUES (#{username}, #{email}, #{password})
+    </insert>
+    <delete id="deleteByEmail">
+        DELETE
+        FROM user
+        WHERE email = #{email};
+    </delete>
+    <select id="selectByEmail" resultMap="BaseResultMap">
+        SELECT *
+        FROM user
+        WHERE email = #{email}
+    </select>
+</mapper>

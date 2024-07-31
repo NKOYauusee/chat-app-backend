@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web_back.mapper.other.BloggerMapper">
+    <resultMap id="BaseResultMap" type="com.example.web_back.entity.po.BloggerPo">
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="session_id" jdbcType="VARCHAR" property="sessionID"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="join_time" jdbcType="DATE" property="loginTime"/>
+    </resultMap>
+
+    <select id="selectByPhone" resultMap="BaseResultMap">
+        SELECT *
+        FROM blogger_access
+        where phone = #{phone}
+    </select>
+
+    <insert id="updateJoinInfo" parameterType="com.example.web_back.entity.po.BloggerPo">
+        UPDATE blogger_access
+        set session_id = #{sessionID},
+            ip         = #{ip},
+            join_time  = #{loginTime}
+        WHERE phone = #{phone}
+    </insert>
+</mapper>
