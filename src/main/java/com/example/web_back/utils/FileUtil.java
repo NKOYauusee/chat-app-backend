@@ -23,8 +23,8 @@ public class FileUtil {
     public String readFile(String fileName) throws IOException {
         String currentDir = getSavePath();
 
-        String filePath = currentDir + "/" + fileName;
-
+        String filePath = currentDir + fileName;
+        logger.info("filePath: {}", filePath);
         return Files.readString(Paths.get(filePath));
     }
 
@@ -33,7 +33,7 @@ public class FileUtil {
 
         InputStream fileInputStream = fileData.getInputStream();
 
-        File tempFile = new File(savePath + "\\" + fileName + ".md");
+        File tempFile = new File(savePath + "/" + fileName + ".md");
         RandomAccessFile raf = new RandomAccessFile(tempFile, "rw");
         long chunkSize = 1024 * 1024;
 
@@ -54,12 +54,43 @@ public class FileUtil {
     }
 
     public String getSavePath() throws IOException {
-        String currentDir = new File("").getCanonicalPath() + directoryName;
+        return mkdirByName(directoryName) + "/";
+    }
+
+    public String getSavePath(String path) throws IOException {
+        return mkdirByName(path) + "/";
+    }
+
+    public String mkdirByName(String name) throws IOException {
+        String currentDir = new File("/app/").getCanonicalPath() + "/" + name;
         File directory = new File(currentDir);
         if (!directory.exists()) {
             directory.mkdir();
         }
-        logger.info("当前保存路径为：{}", currentDir);
-        return currentDir + "\\";
+        logger.info("文件路径->{}", currentDir);
+        return currentDir;
+    }
+
+    public String getFileNameWithoutSuffix(String fileName) {
+        int suffixIndex = fileName.lastIndexOf('.');
+        if (suffixIndex < 0)
+            return fileName;
+        return fileName.substring(0, suffixIndex);
+    }
+
+    public String getFileSuffix(String fileName) {
+        int suffixIndex = fileName.lastIndexOf('.');
+        if (suffixIndex < 0)
+            return "";
+        return fileName.substring(suffixIndex + 1);
+    }
+
+    public String getSegmentName(String fileName, int segmentIndex) {
+        return fileName + "#" + segmentIndex;
+    }
+
+    public String createSaveFileName(String key, String fileName) {
+        String suffix = getFileSuffix(fileName);
+        return key + "." + suffix;
     }
 }

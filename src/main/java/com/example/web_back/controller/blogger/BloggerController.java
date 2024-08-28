@@ -22,7 +22,6 @@ import java.io.IOException;
 @RequestMapping("/blogger")
 public class BloggerController extends BaseController {
     private static final Logger log = LoggerFactory.getLogger(BloggerController.class);
-    private final String blogConstants = "blogger:";
     private final String HAS_READ = "HAS_READ:";
 
     @Resource
@@ -42,13 +41,11 @@ public class BloggerController extends BaseController {
             HttpSession session,
             String phone,
             String fileName) throws IOException, MessagingException, BusinessException {
-        if (validateSession(phone, session.getId())) {
-            return resFail("请稍后访问", null);
-        }
 
         if (redisUtils.hasKey(HAS_READ + phone)) {
             return resFail("内容不存在", null);
         }
+
 
         String ip = httpServletRequest.getRemoteAddr();
         bloggerService.joinWeb(phone, session.getId(), ip);
@@ -71,17 +68,4 @@ public class BloggerController extends BaseController {
         return resSuccess("", null);
     }
 
-    private boolean validateSession(String phone, String id) {
-        log.info("phone {}", phone);
-        // sessionId 变了的情况下 限制一个账号 12小时内只能访问一次
-        if (redisUtils.hasKey(blogConstants + phone)) {
-            String val = (String) redisUtils.get(blogConstants + phone);
-            log.info("val {}", val);
-            log.info("ID {}", id);
-
-            return !val.equals(id);
-        }
-        redisUtils.set(blogConstants + phone, id, 60 * 60 * 12);
-        return false;
-    }
 }

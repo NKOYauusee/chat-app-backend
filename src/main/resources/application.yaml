@@ -50,4 +50,4 @@ mybatis:
 ---
 nko:
   jwtKey: NKOYauusee
-  directoryName: \anyMd
+  directoryName: anyMd

@@ -35,7 +35,7 @@ public class BaseController {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseVo handleBusinessException(BusinessException e) {
-        logger.error("ERROR", e);
+        logger.error("ERROR INFO\n", e);
         return resFail(e);
     }
 
