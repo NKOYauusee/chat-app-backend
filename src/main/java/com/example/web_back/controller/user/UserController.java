@@ -1,6 +1,7 @@
 package com.example.web_back.controller.user;
 
 import cn.hutool.core.util.RandomUtil;
+import com.example.web_back.annotation.RepeatSubmit;
 import com.example.web_back.constants.UserConstants;
 import com.example.web_back.controller.BaseController;
 import com.example.web_back.entity.po.VerifiedUser;
@@ -43,7 +44,7 @@ public class UserController extends BaseController {
             return resFail("验证码错误", null);
         }
 
-        String jwtToken = userService.login(verifiedUser.getUser());
+        String jwtToken = userService.getToken(verifiedUser.getUser());
 
         return resSuccess("登录成功", jwtToken);
     }
@@ -77,14 +78,15 @@ public class UserController extends BaseController {
         return resSuccess("注册成功", null);
     }
 
+    @RepeatSubmit(interval = 10)
     @RequestMapping("/send-mail")
     public ResponseVo sendMail(
             HttpSession session,
-            @RequestBody String to) throws MessagingException {
+            String to) throws MessagingException {
         String key = session.getId() + ":mailCode";
-        if (redisUtils.getExpire(key) > 30) {
-            return resFail("发送频繁，请稍后再试", null);
-        }
+//        if (redisUtils.getExpire(key) > 30) {
+//            return resFail("发送频繁，请稍后再试", null);
+//        }
         String code = RandomUtil.randomNumbers(6);
         redisUtils.set(session.getId() + UserConstants.MAIL_CODE, code, 60);
 

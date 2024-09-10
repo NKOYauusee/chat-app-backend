@@ -1,5 +1,6 @@
 package com.example.web_back.service.impl;
 
+import com.example.web_back.entity.dao.UserDao;
 import com.example.web_back.entity.po.User;
 import com.example.web_back.exception.BusinessException;
 import com.example.web_back.mapper.UserMapper;
@@ -30,8 +31,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String login(User user) throws BusinessException {
+    public String getToken(User user) throws BusinessException {
         User res = userMapper.selectByEmail(user.getEmail());
+        verifyLoginUser(user, res);
+        return jwtUtil.generateToken(user.getEmail());
+    }
+
+    @Override
+    public void update(User user) {
+        userMapper.updateByEmailSelective(user);
+    }
+
+    @Override
+    public UserDao login(User user) throws BusinessException {
+        User res = userMapper.selectByEmail(user.getEmail());
+        verifyLoginUser(user, res);
+
+        UserDao userDao = new UserDao();
+        userDao.setId(res.getId());
+        userDao.setUsername(res.getUsername());
+        userDao.setEmail(res.getEmail());
+        userDao.setAvatar(res.getAvatar());
+        userDao.setPhone(res.getPhone());
+        userDao.setToken(jwtUtil.generateToken(user.getEmail()));
+        return userDao;
+    }
+
+    void verifyLoginUser(User user, User res) throws BusinessException {
         if (res == null) {
             throw new BusinessException("该账户未注册");
         }
@@ -39,12 +65,6 @@ public class UserServiceImpl implements UserService {
             throw new BusinessException("密码错误");
         }
         logger.info("User->{} login success", user.getEmail());
-        return jwtUtil.generateToken(user.getEmail());
-    }
-
-    @Override
-    public void update(User user){
-        userMapper.updateByEmailSelective(user);
     }
 
 }

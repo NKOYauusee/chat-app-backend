@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web_back.mapper.UserFriMapper">
+    <select id="getAllFriend" resultType="com.example.web_back.entity.dao.UserFriendDao">
+        SELECT u.email, u.username, u.avatar, ufl.email AS owner, ufl.status AS status
+        FROM user u
+                 JOIN user_friend_list ufl ON u.email = ufl.friend_email
+        WHERE ufl.email = #{email}
+    </select>
+
+    <insert id="insertUserApply" parameterType="com.example.web_back.entity.po.UserApply">
+        INSERT INTO user_applicant (target, applicant, applicantName, info, time, status)
+        VALUES (#{target}, #{applicant}, #{applicantName}, #{info}, #{time}, #{status});
+    </insert>
+
+    <delete id="deleteApply">
+        DELETE
+        FROM user_applicant
+        WHERE target = #{target}
+          AND applicant = #{apply};
+    </delete>
+
+    <update id="setApplyStatus" parameterType="com.example.web_back.entity.po.UserApply">
+        UPDATE user_applicant
+        SET status = #{status}
+        WHERE target = #{target}
+          AND applicant = #{applicant};
+    </update>
+
+    <select id="selectUseApplyList" resultType="com.example.web_back.entity.po.UserApply">
+        SELECT target, applicant, applicantName, info, time, status
+        FROM user_applicant
+        WHERE target = #{target}
+           OR applicant = #{email}
+        ORDER BY TIME DESC;
+    </select>
+
+    <select id="getHasFriendApply" resultType="com.example.web_back.entity.po.UserApply">
+        SELECT target, applicant
+        FROM user_applicant
+        WHERE target = #{target}
+           OR applicant = #{email};
+    </select>
+
+    <insert id="insertFriend">
+        INSERT INTO user_friend_list (email, friend_email)
+        VALUES (#{u1}, #{u2});
+    </insert>
+
+    <delete id="deleteFriend">
+        DELETE
+        FROM user_friend_list
+        WHERE email = #{u1}
+          AND friend_email = #{u2};
+    </delete>
+
+    <select id="setFriendStatus">
+        UPDATE user_friend_list
+        SET status = ${status}
+        WHERE email = ${who}
+          AND friend_email = ${friend}
+    </select>
+
+    <select id="isFriendWithWho" resultType="com.example.web_back.entity.dao.UserFriendDao">
+        SELECT *
+        FROM user_friend_list ufl
+        WHERE email = #{who}
+          AND friend_email = #{friend};
+    </select>
+
+    <select id="batchDeleteFriend" resultType="int" parameterType="list">
+        DELETE FROM user_friend_list
+        WHERE email IN
+        <foreach collection="emails" item="email" open="(" separator="," close=")">
+            #{email}
+        </foreach>
+        AND owner = #{owner}
+    </select>
+</mapper>
