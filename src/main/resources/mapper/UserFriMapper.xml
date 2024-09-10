@@ -8,6 +8,7 @@
         FROM user u
                  JOIN user_friend_list ufl ON u.email = ufl.friend_email
         WHERE ufl.email = #{email}
+          AND ufl.status = 0
     </select>
 
     <insert id="insertUserApply" parameterType="com.example.web_back.entity.po.UserApply">
@@ -40,7 +41,7 @@
     <select id="getHasFriendApply" resultType="com.example.web_back.entity.po.UserApply">
         SELECT target, applicant
         FROM user_applicant
-        WHERE target = #{target}
+        WHERE (target = #{target} AND status = 0)
            OR applicant = #{email};
     </select>
 
@@ -58,9 +59,9 @@
 
     <select id="setFriendStatus">
         UPDATE user_friend_list
-        SET status = ${status}
-        WHERE email = ${who}
-          AND friend_email = ${friend}
+        SET status = #{status}
+        WHERE email = #{who}
+          AND friend_email = #{friend}
     </select>
 
     <select id="isFriendWithWho" resultType="com.example.web_back.entity.dao.UserFriendDao">

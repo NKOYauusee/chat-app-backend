@@ -77,7 +77,7 @@ public class UserFriController extends BaseController {
     }
 
     // 批量删除好友
-    @RequestMapping("/deleteFriends")
+    @RequestMapping("/batchDelFriends")
     public ResponseVo deleteFriends(List<String> friendDaoList, String who) {
         userFriService.batchDeleteFriend(friendDaoList, who);
         return resSuccess();
