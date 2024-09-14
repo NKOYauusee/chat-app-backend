@@ -17,7 +17,7 @@ spring:
     password: 1234
   web:
     resources:
-      add-mappings: false
+      add-mappings: true
   mail:
     host: smtp.163.com
     username: Yomiger@163.com
@@ -51,3 +51,4 @@ mybatis:
 nko:
   jwtKey: NKOYauusee
   directoryName: anyMd
+  filePath: D:/MyCodes/MyBloggerWebSite/web_back/user/

@@ -1,10 +1,9 @@
 package com.example.web_back.mapper;
 
 
-import com.example.web_back.entity.po.UserApply;
 import com.example.web_back.entity.dao.UserFriendDao;
+import com.example.web_back.entity.po.UserApply;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -35,9 +34,6 @@ public interface UserFriMapper {
 
     // 删除单个好友
     void deleteFriend(String u1, String u2);
-
-    // 批量删除好友
-    int batchDeleteFriend(@Param("emails") List<String> emails, @Param("owner") String owner);
 
     // 判断是否是好友
     UserFriendDao isFriendWithWho(String who, String friend);

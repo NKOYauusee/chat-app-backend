@@ -27,8 +27,9 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<ChatBean> get2DayOfflineMsg(String key) {
         long date = new Date().getTime() - UserConstants.DAY_ONE * 2;
-        //mapper.deleteOfflineMsg(key);
-        return mapper.get2DayOfflineMsg(key, date);
+        var list = mapper.get2DayOfflineMsg(key, date);
+        mapper.deleteOfflineMsg(key);
+        return list;
     }
 
     @Override

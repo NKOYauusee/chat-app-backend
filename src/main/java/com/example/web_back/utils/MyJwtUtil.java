@@ -40,7 +40,7 @@ public class MyJwtUtil {
 
     // false 为 正确token
     public boolean validateToken(String token) {
-        logger.info("=========================");
+        //logger.info("=========================");
         return JWTUtil.verify(token, jwtKey.getBytes());
     }
 

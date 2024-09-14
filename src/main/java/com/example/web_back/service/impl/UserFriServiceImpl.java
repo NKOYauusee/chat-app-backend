@@ -63,13 +63,16 @@ public class UserFriServiceImpl implements UserFriService {
 
     @Override
     public void deleteFriend(String email, String friend) {
+        // 单方面删除
         friMapper.deleteFriend(email, friend);
-        friMapper.deleteFriend(friend, email);
+        // friMapper.deleteFriend(friend, email);
     }
 
     @Override
-    public void batchDeleteFriend(List<String> friendDaoList, String who) {
-        friMapper.batchDeleteFriend(friendDaoList, who);
+    public void batchDeleteFriend(List<UserFriendDao> friendDaoList) {
+        for (UserFriendDao userFriendDao : friendDaoList) {
+            friMapper.deleteFriend(userFriendDao.getOwner(), userFriendDao.getEmail());
+        }
     }
 
     @Override

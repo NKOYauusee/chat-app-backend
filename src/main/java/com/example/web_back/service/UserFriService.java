@@ -20,7 +20,7 @@ public interface UserFriService {
 
     void deleteFriend(String email, String friend);
 
-    void batchDeleteFriend(List<String> friendDaoList, String who);
+    void batchDeleteFriend(List<UserFriendDao> friendDaoList);
 
     void setFriendStatus(UserFriendDao userFriend) throws BusinessException;
 

@@ -2,6 +2,7 @@ package com.example.web_back.websocket;
 
 import com.alibaba.fastjson2.JSON;
 import com.example.web_back.entity.po.ChatBean;
+import com.example.web_back.utils.MyJwtUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,9 @@ public class WebSocketServer extends TextWebSocketHandler {
 
     @Resource
     WebSocketManager webSocketManager;
+
+    @Resource
+    private MyJwtUtil myJwtUtil;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
@@ -52,10 +56,11 @@ public class WebSocketServer extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         // 获得客户端传来的消息
         String payload = message.getPayload();
-        logger.info("server 接收到发送的消息 {}", payload);
         //响应请求
         ChatBean chatBean = JSON.to(ChatBean.class, payload);
         chatBean.setSendTime(new Date().getTime());
+
+        logger.info("server 待发送消息-> {},", payload);
         // TODO 校验好友状态
         session.sendMessage(new TextMessage(JSON.toJSONString(chatBean)));
         //转发请求
@@ -65,11 +70,12 @@ public class WebSocketServer extends TextWebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         String token = Objects.requireNonNull(session.getHandshakeHeaders().get("token")).get(0);
-        logger.info("afterConnectionClosed {}", token);
+        //logger.info("afterConnectionClosed {}", token);
         if (token != null) {
             // 用户退出，移除缓存
             webSocketManager.remove(token);
         }
-        logger.info("连接断开");
+
+        logger.info("{}连接断开", myJwtUtil.getJwtVal(token));
     }
 }

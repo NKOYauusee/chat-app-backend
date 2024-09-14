@@ -60,4 +60,11 @@
         FROM user
         WHERE email = #{email}
     </select>
+
+    <select id="searchWithKeyword" resultMap="BaseResultMap">
+        SELECT id, username, email, password, phone, avatar
+        FROM user
+        WHERE email LIKE CONCAT('%', #{searchContent}, '%')
+           OR username LIKE CONCAT('%', #{searchContent}, '%') LIMIT 10;
+    </select>
 </mapper>

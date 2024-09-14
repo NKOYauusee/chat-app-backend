@@ -1,10 +1,9 @@
 package com.example.web_back.controller.android;
 
 
-import com.example.web_back.annotation.FucLogger;
 import com.example.web_back.controller.BaseController;
-import com.example.web_back.entity.po.UserApply;
 import com.example.web_back.entity.dao.UserFriendDao;
+import com.example.web_back.entity.po.UserApply;
 import com.example.web_back.entity.vo.ResponseVo;
 import com.example.web_back.exception.BusinessException;
 import com.example.web_back.service.UserFriService;
@@ -25,7 +24,7 @@ public class UserFriController extends BaseController {
     UserFriService userFriService;
 
     // 获取好友列表
-    @FucLogger("getFriendList")
+    //@FucLogger("getFriendList")
     @RequestMapping("/getFriends")
     public ResponseVo getFriendList(String email) {
         List<UserFriendDao> res = userFriService.getFriendList(email);
@@ -33,7 +32,7 @@ public class UserFriController extends BaseController {
     }
 
     // 发送好友申请
-    @FucLogger("好友申请")
+    //@FucLogger("好友申请")
     @RequestMapping("/addFriend")
     public ResponseVo addFriend(@RequestBody UserApply userApply) throws BusinessException {
         userFriService.insertApplyFriend(userApply);
@@ -78,8 +77,8 @@ public class UserFriController extends BaseController {
 
     // 批量删除好友
     @RequestMapping("/batchDelFriends")
-    public ResponseVo deleteFriends(List<String> friendDaoList, String who) {
-        userFriService.batchDeleteFriend(friendDaoList, who);
+    public ResponseVo deleteFriends(@RequestBody List<UserFriendDao> friendDaoList) {
+        userFriService.batchDeleteFriend(friendDaoList);
         return resSuccess();
     }
 }

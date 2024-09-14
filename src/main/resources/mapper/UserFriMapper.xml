@@ -65,18 +65,9 @@
     </select>
 
     <select id="isFriendWithWho" resultType="com.example.web_back.entity.dao.UserFriendDao">
-        SELECT *
+        SELECT ufl.friend_email AS email, ufl.status AS status, ufl.email AS owner
         FROM user_friend_list ufl
         WHERE email = #{who}
           AND friend_email = #{friend};
-    </select>
-
-    <select id="batchDeleteFriend" resultType="int" parameterType="list">
-        DELETE FROM user_friend_list
-        WHERE email IN
-        <foreach collection="emails" item="email" open="(" separator="," close=")">
-            #{email}
-        </foreach>
-        AND owner = #{owner}
     </select>
 </mapper>

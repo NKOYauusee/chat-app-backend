@@ -10,12 +10,16 @@ import com.example.web_back.entity.vo.ResponseVo;
 import com.example.web_back.exception.BusinessException;
 import com.example.web_back.service.ChatService;
 import com.example.web_back.service.UserService;
+import com.example.web_back.service.impl.MediaServiceImpl;
 import com.example.web_back.utils.MyJwtUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -59,6 +63,9 @@ public class UserController extends BaseController {
 
     @RequestMapping("/login")
     public ResponseVo login(String email, String password, String code) throws BusinessException {
+        if (email.isEmpty() || password.isEmpty())
+            return resFail();
+
         //if (code.isEmpty() || code == null)
         //    return resFail();
 
@@ -80,14 +87,12 @@ public class UserController extends BaseController {
 
         // TODO 验证 code
 
-
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
         user.setUsername(username);
-        userService.register(user);
 
-        return resSuccess();
+        return resSuccess(null, userService.register(user));
     }
 
     @RequestMapping("/verifyToken")
@@ -110,5 +115,42 @@ public class UserController extends BaseController {
         return resSuccess("", res);
     }
 
+    @Resource
+    MediaServiceImpl mediaService;
+
+    @PostMapping("/registerWithProfile")
+    public ResponseVo registerWithProfile(
+            @RequestParam("fileData") MultipartFile fileData,
+            @RequestParam("email") String email,
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            @RequestParam("code") String code) throws BusinessException {
+
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setUsername(username);
+        var res = userService.registerWithProfile(user, fileData);
+        return resSuccess(null, res);
+    }
+
     // TODO 头像上传
+    @PostMapping("/uploadProfile")
+    public ResponseVo uploadProfile(
+            @RequestParam("fileData") MultipartFile fileData,
+            @RequestParam("userId") String userId,
+            @RequestParam("email") String email) throws BusinessException {
+        String url = mediaService.uploadProfile(fileData, userId, email);
+        return resSuccess(null, url);
+    }
+
+
+    // TODO 分页待实现
+    @FucLogger("searchContact")
+    @PostMapping("/search")
+    public ResponseVo searchContact(String searchContent) {
+        logger.info(searchContent);
+        var res = userService.search(searchContent);
+        return resSuccess(null, res);
+    }
 }

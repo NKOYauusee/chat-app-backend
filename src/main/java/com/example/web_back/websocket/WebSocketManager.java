@@ -24,6 +24,10 @@ public class WebSocketManager {
     @Resource
     OfflineHelper offlineHelper;
 
+
+    @Resource
+    MessageHelper helper;
+
     public boolean verifyAndAdd(String token, WebSocketSession ws) {
         conns.put(token, ws);
         return true;
@@ -51,10 +55,15 @@ public class WebSocketManager {
     }
 
     public void sendMsg(ChatBean chatBean) throws IOException {
-        logger.info("转发消息 {}", JSON.toJSONString(chatBean));
+        //logger.info("转发消息 {}", JSON.toJSONString(chatBean));
         WebSocketSession receiver = conns.get(chatBean.getReceiver().toLowerCase());
 
         chatBean.setOwner(chatBean.getReceiver());
+
+        if (!helper.isSavaOfflineMsg(chatBean.getReceiver(), chatBean.getSender())) {
+            return;
+        }
+
 
         if (receiver != null) {
             String msg = JSON.toJSONString(chatBean);

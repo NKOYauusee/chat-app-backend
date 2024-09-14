@@ -24,7 +24,7 @@ public class WebSocketAuthInterceptor implements HandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) {
-        logger.info("Websocket 准备连接");
+        //logger.info("Websocket 准备连接");
         // TODO token验证
         HttpHeaders headers = request.getHeaders();
         List<String> header = headers.get("token");
@@ -42,6 +42,6 @@ public class WebSocketAuthInterceptor implements HandshakeInterceptor {
             ServerHttpRequest request,
             ServerHttpResponse response,
             WebSocketHandler wsHandler, Exception exception) {
-        logger.info("握手结束");
+        //logger.info("握手结束");
     }
 }

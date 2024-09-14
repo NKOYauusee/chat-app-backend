@@ -6,14 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.RandomAccessFile;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@Component
+@Component("nkoFileUtil")
 public class FileUtil {
     private final Logger logger = LoggerFactory.getLogger(FileUtil.class);
 
@@ -92,5 +89,80 @@ public class FileUtil {
     public String createSaveFileName(String key, String fileName) {
         String suffix = getFileSuffix(fileName);
         return key + "." + suffix;
+    }
+
+    /**
+     * 将文件转换成Byte数组
+     */
+    public byte[] getBytesByFile(String pathStr) {
+        File file = new File(pathStr);
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
+            byte[] b = new byte[1024];
+            int n;
+            while ((n = fis.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            fis.close();
+            byte[] data = bos.toByteArray();
+            bos.close();
+            return data;
+        } catch (Exception e) {
+            logger.error("文件转换成Byte数组失败");
+        }
+        return null;
+    }
+
+    /**
+     * 将Byte数组转换成文件
+     */
+    public void getFileByBytes(byte[] bytes, String filePath, String fileName) {
+        BufferedOutputStream bos = null;
+        FileOutputStream fos = null;
+        File file;
+        try {
+            File dir = new File(filePath);
+            if (!dir.exists()) {// 判断文件目录是否存在
+                var res = dir.mkdirs();
+            }
+
+            file = new File(filePath + "/" + fileName);
+            fos = new FileOutputStream(file);
+            bos = new BufferedOutputStream(fos);
+            bos.write(bytes);
+        } catch (Exception e) {
+            logger.info("filePath {} {}", filePath, new File(filePath).exists());
+            logger.info("fileName {}", fileName);
+            logger.info("fileExist {}", new File(filePath + "/" + fileName).exists());
+            logger.error("Byte数组转换成文件失败", e);
+        } finally {
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    logger.error("bos 关闭错误");
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    logger.error("fos 关闭错误");
+                }
+            }
+        }
+    }
+
+    /**
+     * 获取文件后缀
+     */
+    public String getFileExtension(MultipartFile File) {
+        String originalFileName = File.getOriginalFilename();
+        if (originalFileName != null) {
+            return originalFileName.substring(originalFileName.lastIndexOf("."));
+        }
+
+        return null;
     }
 }
