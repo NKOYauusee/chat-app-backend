@@ -3,18 +3,18 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.web_back.mapper.ChatBeanMapper">
-    <select id="saveOfflineMsg" parameterType="com.example.web_back.entity.po.ChatBean">
-        INSERT INTO user_chat (receiver, receiverName, sender, senderName, message, sendTime, owner, type)
+    <select id="saveOfflineMsg" parameterType="com.example.web_back.entity.po.ChatBean" resultType="java.lang.Integer">
+        INSERT INTO user_chat (receiver, receiverName, sender, senderName, message, sendTime, owner, msgType)
         VALUES (#{receiver}, #{receiverName}, #{sender}, #{senderName}, #{message}, #{sendTime}, #{owner},
-                #{type});
+                #{msgType});
     </select>
 
     <select id="get20OfflineMsg" resultType="com.example.web_back.entity.po.ChatBean">
         <!--           多端消息 -->
         <!--           OR sender = #{key} -->
-        SELECT uc.sender, uc.senderName, uc.receiverName, uc.receiver, uc.sendTime, uc.type, uc.owner, uc.message
+        SELECT uc.sender, uc.senderName, uc.receiverName, uc.receiver, uc.sendTime, uc.msgType, uc.owner, uc.message
         FROM (
-        SELECT sender, senderName, receiverName, receiver, sendTime, type, owner, message,
+        SELECT sender, senderName, receiverName, receiver, sendTime, msgType, owner, message,
         ROW_NUMBER() OVER (PARTITION BY sender ORDER BY sendTime DESC) AS n
         FROM user_chat
         WHERE receiver = #{key}
@@ -34,7 +34,7 @@
         receiverName,
         receiver,
         sendTime,
-        type,
+        msgType,
         owner,
         message
         FROM user_chat
@@ -51,7 +51,7 @@
         receiverName,
         receiver,
         sendTime,
-        type,
+        msgType,
         owner,
         message
         FROM user_chat

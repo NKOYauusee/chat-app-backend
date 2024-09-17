@@ -71,7 +71,11 @@ public class WebSocketManager {
         } else {
             // todo 数据存储
             logger.info("该账户离线中 receiver: {}", chatBean.getReceiver());
-            offlineHelper.saveOneLine(chatBean);
+            try {
+                offlineHelper.saveOneLine(chatBean);
+            } catch (Exception e) {
+                logger.error("",e);
+            }
         }
     }
 }

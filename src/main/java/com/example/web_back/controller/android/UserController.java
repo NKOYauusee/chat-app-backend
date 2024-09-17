@@ -134,7 +134,7 @@ public class UserController extends BaseController {
         return resSuccess(null, res);
     }
 
-    // TODO 头像上传
+
     @PostMapping("/uploadProfile")
     public ResponseVo uploadProfile(
             @RequestParam("fileData") MultipartFile fileData,
@@ -145,12 +145,11 @@ public class UserController extends BaseController {
     }
 
 
-    // TODO 分页待实现
-    @FucLogger("searchContact")
+    //
+    //@FucLogger("searchContact")
     @PostMapping("/search")
-    public ResponseVo searchContact(String searchContent) {
-        logger.info(searchContent);
-        var res = userService.search(searchContent);
+    public ResponseVo searchContact(String searchContent, int page) {
+        var res = userService.search(searchContent, page);
         return resSuccess(null, res);
     }
 }

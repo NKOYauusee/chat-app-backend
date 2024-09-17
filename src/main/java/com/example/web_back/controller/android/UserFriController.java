@@ -1,6 +1,7 @@
 package com.example.web_back.controller.android;
 
 
+import com.example.web_back.annotation.FucLogger;
 import com.example.web_back.controller.BaseController;
 import com.example.web_back.entity.dao.UserFriendDao;
 import com.example.web_back.entity.po.UserApply;
@@ -32,7 +33,7 @@ public class UserFriController extends BaseController {
     }
 
     // 发送好友申请
-    //@FucLogger("好友申请")
+    @FucLogger("好友申请")
     @RequestMapping("/addFriend")
     public ResponseVo addFriend(@RequestBody UserApply userApply) throws BusinessException {
         userFriService.insertApplyFriend(userApply);

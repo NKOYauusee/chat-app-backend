@@ -18,6 +18,6 @@ public interface UserService {
 
     UserDao registerWithProfile(User user, MultipartFile fileData) throws BusinessException;
 
-    List<User> search(String searchContent);
+    List<User> search(String searchContent, int page);
 }
 

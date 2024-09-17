@@ -14,7 +14,7 @@ public interface ChatBeanMapper {
 
     List<ChatBean> getOfflineWithSb(String key, String sender, Long date);
 
-    void saveOfflineMsg(ChatBean chats);
+    int saveOfflineMsg(ChatBean chats);
 
     void deleteOfflineMsg(String key);
 }

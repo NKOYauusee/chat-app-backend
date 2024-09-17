@@ -20,6 +20,7 @@ public class AsyncConfig {
         executor.setQueueCapacity(30);
         executor.setThreadNamePrefix("Async-nko-");
         executor.initialize();
+
         return executor;
     }
 }

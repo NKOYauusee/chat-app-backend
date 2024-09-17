@@ -12,5 +12,5 @@ public class ChatBean {
     String message;
     long sendTime;
     String owner;
-    int type;
+    int msgType;
 }

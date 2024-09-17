@@ -12,7 +12,7 @@ public class WebResourceConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/android/images/**")
+        registry.addResourceHandler("/android/files/**")
                 .addResourceLocations("file:///" + path);
     }
 }

@@ -59,8 +59,7 @@ public class WebSocketServer extends TextWebSocketHandler {
         //响应请求
         ChatBean chatBean = JSON.to(ChatBean.class, payload);
         chatBean.setSendTime(new Date().getTime());
-
-        logger.info("server 待发送消息-> {},", payload);
+        logger.info("server 待发送消息-> {},", JSON.toJSONString(chatBean));
         // TODO 校验好友状态
         session.sendMessage(new TextMessage(JSON.toJSONString(chatBean)));
         //转发请求

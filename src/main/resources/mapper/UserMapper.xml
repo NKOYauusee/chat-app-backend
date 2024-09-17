@@ -12,7 +12,8 @@
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
     <sql id="Base_Column_List">
-        id,
+        id
+        ,
         username,
         email,
         `password`,
@@ -23,9 +24,9 @@
             useGeneratedKeys="true">
         <!--@mbg.generated-->
         insert into `user` (username, email, `password`,
-                            phone, avatar)
+        phone, avatar)
         values (#{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
-                #{phone,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR})
+        #{phone,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR})
     </insert>
     <update id="updateByEmailSelective" parameterType="com.example.web_back.entity.po.User">
         <!--@mbg.generated-->
@@ -65,6 +66,6 @@
         SELECT id, username, email, password, phone, avatar
         FROM user
         WHERE email LIKE CONCAT('%', #{searchContent}, '%')
-           OR username LIKE CONCAT('%', #{searchContent}, '%') LIMIT 10;
+           OR username LIKE CONCAT('%', #{searchContent}, '%')
     </select>
 </mapper>

@@ -46,7 +46,10 @@ public class UserFriServiceImpl implements UserFriService {
     public void setApplyStatus(UserApply userApply) {
         friMapper.setApplyStatus(userApply);
         if (ApplyStatus.APPROVED.getCode() == userApply.getStatus()) {
+            friMapper.deleteFriend(userApply.getApplicant(), userApply.getTarget());
             friMapper.insertFriend(userApply.getApplicant(), userApply.getTarget());
+
+            friMapper.deleteFriend(userApply.getTarget(), userApply.getApplicant());
             friMapper.insertFriend(userApply.getTarget(), userApply.getApplicant());
         }
     }

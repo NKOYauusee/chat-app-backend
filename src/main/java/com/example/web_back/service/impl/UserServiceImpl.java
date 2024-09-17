@@ -6,6 +6,8 @@ import com.example.web_back.exception.BusinessException;
 import com.example.web_back.mapper.UserMapper;
 import com.example.web_back.service.UserService;
 import com.example.web_back.utils.MyJwtUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,8 +56,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> search(String searchContent) {
-        return userMapper.searchWithKeyword(searchContent);
+    public List<User> search(String searchContent, int page) {
+        PageHelper.startPage(page, 10);
+
+        List<User> list = userMapper.searchWithKeyword(searchContent);
+
+        return new PageInfo<>(list).getList();
     }
 
 

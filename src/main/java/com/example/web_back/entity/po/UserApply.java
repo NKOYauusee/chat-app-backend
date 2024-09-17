@@ -8,6 +8,8 @@ import java.io.Serializable;
 @Data
 public class UserApply implements Serializable {
     String target;
+    String targetAvatar;
+    String applicantAvatar;
     String applicant;
     String applicantName;
     String info;
