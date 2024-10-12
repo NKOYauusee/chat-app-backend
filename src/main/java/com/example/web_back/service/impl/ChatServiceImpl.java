@@ -19,8 +19,7 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public List<ChatBean> get20OfflineMsg(String key) {
         long date = new Date().getTime() - UserConstants.DAY_ONE * 2;
-        List<ChatBean> res = mapper.get20OfflineMsg(key);
-        return List.of();
+        return mapper.get20OfflineMsg(key);
     }
 
     // 获取最近两天的消息

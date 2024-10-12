@@ -4,9 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.web_back.mapper.ChatBeanMapper">
     <select id="saveOfflineMsg" parameterType="com.example.web_back.entity.po.ChatBean" resultType="java.lang.Integer">
-        INSERT INTO user_chat (receiver, receiverName, sender, senderName, message, sendTime, owner, msgType)
+        INSERT INTO user_chat (receiver, receiverName, sender, senderName, message, sendTime, owner, msgType,
+                               senderAvatar)
         VALUES (#{receiver}, #{receiverName}, #{sender}, #{senderName}, #{message}, #{sendTime}, #{owner},
-                #{msgType});
+                #{msgType},
+                #{senderAvatar});
     </select>
 
     <select id="get20OfflineMsg" resultType="com.example.web_back.entity.po.ChatBean">
@@ -36,7 +38,8 @@
         sendTime,
         msgType,
         owner,
-        message
+        message,
+        senderAvatar
         FROM user_chat
         WHERE receiver = #{key}
         AND sendTime &gt; #{date}
@@ -53,7 +56,8 @@
         sendTime,
         msgType,
         owner,
-        message
+        message,
+        senderAvatar
         FROM user_chat
         WHERE receiver = #{key}
         AND sender = #{sender}

@@ -24,7 +24,10 @@ public class UserFriServiceImpl implements UserFriService {
 
     @Override
     public List<UserFriendDao> getFriendList(String email) {
-        return friMapper.getAllFriend(email);
+        var friendList = friMapper.getAllFriend(email);
+        friendList.addAll(friMapper.getAllGroups(email));
+
+        return friendList;
     }
 
     // 申请

@@ -13,4 +13,6 @@ public class ChatBean {
     long sendTime;
     String owner;
     int msgType;
+
+    String senderAvatar;
 }

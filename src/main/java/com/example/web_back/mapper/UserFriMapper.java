@@ -12,6 +12,9 @@ public interface UserFriMapper {
     // 查询某用户的好友列表
     List<UserFriendDao> getAllFriend(String email);
 
+    List<UserFriendDao> getAllGroups(String email);
+
+
     // 设置某用户与该好友的状态 拉黑等
     void setFriendStatus(int status, String who, String friend);
 

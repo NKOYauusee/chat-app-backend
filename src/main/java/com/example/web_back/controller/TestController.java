@@ -26,7 +26,10 @@ public class TestController extends BaseController {
     //@RepeatSubmit
     @FucLogger("TestController")
     @RequestMapping("/test")
-    public ResponseVo test(@RequestParam("val") String val) {
-        return resSuccess("test success", val);
+    public ResponseVo test() throws Exception {
+
+        //throw new Exception("参数格式错误");
+
+        return resSuccess();
     }
 }

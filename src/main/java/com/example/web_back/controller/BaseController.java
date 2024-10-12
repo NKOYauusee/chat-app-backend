@@ -24,7 +24,7 @@ public class BaseController {
 //    @ExceptionHandler(Exception.class)
 //    public ResponseVo handleException(Exception e) {
 //        logger.error(e.getMessage());
-//        return resFail(e);
+//        return resFail(e.getMessage(), null);
 //    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

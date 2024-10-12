@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.web_back.mapper.GroupMapper">
+    <insert id="insertGroup" parameterType="com.example.web_back.entity.po.GroupBean">
+        INSERT INTO user_group (id, name, creatar, date, info, avatar)
+        values (#{id}, #{name}, #{creator}, #{date}, #{info}, #{avatar})
+    </insert>
+
+    <select id="selectAll" resultType="com.example.web_back.entity.po.GroupBean">
+        SELECT id
+        FROM user_group
+    </select>
+</mapper>

@@ -79,4 +79,11 @@
         WHERE email = #{who}
           AND friend_email = #{friend};
     </select>
+
+    <select id="getAllGroups" resultType="com.example.web_back.entity.dao.UserFriendDao">
+        SELECT ug.id AS email, ug.name AS username, ug.avatar AS avatar, ufl.email AS owner, ufl.status AS status
+        FROM user_group ug
+                 JOIN user_friend_list ufl ON ug.id = ufl.friend_email
+        WHERE ufl.email = #{email}
+    </select>
 </mapper>
